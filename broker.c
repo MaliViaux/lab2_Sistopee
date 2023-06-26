@@ -79,14 +79,15 @@ int main(int argc, char *argv[])
 	}
 	// Se abre el archivo.
 	FILE *archivo = fopen(nombre_archivo_entrada, "r");
-	char buffer[2000];
+	char buffer[60];
 	// lectura del archivo
-	while (fgets(buffer, 2000, archivo) != NULL)
+	while (fgets(buffer, 60, archivo) != NULL)
 	{
 		// se escoge un hijo de forma aleatoria
 		int hijo = rand() % cantidadWorkers;
+		printf("%s\n",buffer);
 		// Se escribe la linea al hijo
-		if ((write(fd_padre_hijo[hijo][1], buffer, 2000)) == -1)
+		if ((write(fd_padre_hijo[hijo][1], buffer, 60)) == -1)
 		{
 			printf("Error al escribir en el pipe");
 			exit(1);
@@ -96,6 +97,7 @@ int main(int argc, char *argv[])
 	// Se escribe el FIN para que dejen de leer los workers
 	for (int i = 0; i < cantidadWorkers; i++)
 	{
+		printf("FIN");
 		if ((write(fd_padre_hijo[i][1], "FIN", sizeof("FIN")) == -1))
 		{
 			printf("Error al escribir en el pipe");
@@ -112,10 +114,13 @@ int main(int argc, char *argv[])
 	for (int i = 0; i < cantidadWorkers; i++){
 		read(fd_hijo_padre[i][0], &temp, sizeof(temp));
 		cantidadLineas += temp;
+		printf(" %d\n",cantidadLineas);
         read(fd_hijo_padre[i][0], &temp1, sizeof(temp));
 		NO += temp1;
+		printf(" %d\n",NO);
         read(fd_hijo_padre[i][0], &temp1, sizeof(temp));
 		SI += temp1;
+		printf(" %d\n",SI);
 	}
 
 	// Arreglo que contendra todos las cadenas y si es regular o no por worker
