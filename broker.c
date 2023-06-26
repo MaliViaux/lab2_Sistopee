@@ -68,7 +68,7 @@ int main(int argc, char *argv[])
 			close(fd_padre_hijo[cont][0]);
 			close(fd_hijo_padre[cont][1]);
 			// ejecucion de los procesos worker
-			execlp("./worker", "worker",argv[3], argv[4], NULL);
+			execlp("./worker", "worker", NULL);
 		}
 	}
 	// cierre de entradas del pipe para el padre inecesarias
@@ -77,6 +77,13 @@ int main(int argc, char *argv[])
 		close(fd_padre_hijo[i][0]);
 		close(fd_hijo_padre[i][1]);
 	}
+
+	for(int i = 0; i < cantidadWorkers; i++)
+	{
+		int status;
+		waitpid(workers_pid[i], &status, 0);
+	}
+
 	// Se abre el archivo.
 	FILE *archivo = fopen(nombre_archivo_entrada, "r");
 	char buffer[60];
@@ -114,13 +121,13 @@ int main(int argc, char *argv[])
 	for (int i = 0; i < cantidadWorkers; i++){
 		read(fd_hijo_padre[i][0], &temp, sizeof(temp));
 		cantidadLineas += temp;
-		printf(" %d\n",cantidadLineas);
+		printf("cant lineas %d\n",cantidadLineas);
         read(fd_hijo_padre[i][0], &temp1, sizeof(temp));
 		NO += temp1;
-		printf(" %d\n",NO);
+		printf("cant no %d\n",NO);
         read(fd_hijo_padre[i][0], &temp1, sizeof(temp));
 		SI += temp1;
-		printf(" %d\n",SI);
+		printf("cant si %d\n",SI);
 	}
 
 	// Arreglo que contendra todos las cadenas y si es regular o no por worker
@@ -136,11 +143,8 @@ int main(int argc, char *argv[])
 	{
 		read(fd_hijo_padre[i][0], &temp2, sizeof(lineas));
 		lineas[i] = temp2;
+		printf(" %ds\n",lineas[i]);
 	}
-
-	
-
-
 
 	// ESCRITURA DEL ARCHIVO FINAL
 	FILE *archivoSalida = fopen(nombre_archivo_salida, "w");

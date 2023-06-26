@@ -73,7 +73,7 @@ int main(int argc, char* argv[]){
     // Se ejecuta el broker
     int pid= fork();
     if(pid==0){
-        execlp("./broker", "broker", nombre_archivo_entrada,nombre_archivo_salida, cantidadWorkers,cantidadChunks,porConsola,NULL);
+        execlp("./broker", "broker", nombre_archivo_entrada,nombre_archivo_salida,cantidadChunks,cantidadWorkers,porConsola,NULL);
     }
         
     return 0;
