@@ -5,5 +5,5 @@
 #include <time.h>
 #include <unistd.h>
 #include "estructura.h"
-//#include <sys/wait.h>
+#include <sys/wait.h>
 

@@ -1,5 +1,19 @@
 #include "fworker.h"
 
+// Entradas: void
+// Salida: lista
+// Descripcion: crea una lista enlazada
+Lista *crearLista(){
+    Lista *L;
+    L = (Lista*)malloc(sizeof(Lista));
+    L -> head = NULL;
+    L -> n = 0;
+    return L;
+}
+
+// Entradas: cadena
+// Salida: 0,1 int
+// Descripcion: Verifica si es una cadena
 int esCadenaRegular(char *cadena){
     Lista *L = crearLista();
     for (int i = 0; i < 60; i++) {

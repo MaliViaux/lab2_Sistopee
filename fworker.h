@@ -3,7 +3,7 @@
 #include <string.h>
 #include <math.h>
 #include <unistd.h>
-//#include <sys/wait.h> DESCOMENTAR ESTO
+#include <sys/wait.h> 
 #include "estructura.h"
 
 // CABECERAS DE FUCNIONES

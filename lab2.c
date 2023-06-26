@@ -3,9 +3,11 @@
 #include <string.h>
 #include <math.h>
 #include <unistd.h>
-//#include <sys/wait.h> DESCOMENTAR ESTO
+#include <sys/wait.h>
 
 int main(int argc, char* argv[]){
+
+    
 	extern char *optarg; //Almacena los argumentos introducidos después de haber indicado la variable.
     extern int optind; // Almacena el número de argumentos introducidos.
     int option;
@@ -71,7 +73,7 @@ int main(int argc, char* argv[]){
     // Se ejecuta el broker
     int pid= fork();
     if(pid==0){
-        execlp("./broker", "broker", nombre_archivo_entrada,nombre_archivo_salida, cantidadWorkers,cantidadChunks,NULL);
+        execlp("./broker", "broker", nombre_archivo_entrada,nombre_archivo_salida, cantidadWorkers,cantidadChunks,porConsola,NULL);
     }
         
     return 0;

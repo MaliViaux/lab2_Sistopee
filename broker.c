@@ -1,7 +1,13 @@
+
+#include <getopt.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <getopt.h>
-
+#include <string.h>
+#include <math.h>
+#include <time.h>
+#include <unistd.h>
+#include "estructura.h"
+#include <sys/wait.h>
 int main(int argc, char *argv[])
 {
 	// Semilla
@@ -14,7 +20,7 @@ int main(int argc, char *argv[])
 	char procesoPorPantalla[100];
 	strcpy(procesoPorPantalla, argv[5]);
 	int cantidadWorkers = atoi(argv[4]);
-    int cantidadChunks = atoi(argv[3]);
+    //int cantidadChunks = atoi(argv[3]);
 
 	// pid de los procesos hijos;
 	int workers_pid[cantidadWorkers];
@@ -102,13 +108,14 @@ int main(int argc, char *argv[])
 	int SI = 0;
 	int NO = 0;
 	int temp;
+	int temp1;
 	for (int i = 0; i < cantidadWorkers; i++){
 		read(fd_hijo_padre[i][0], &temp, sizeof(temp));
 		cantidadLineas += temp;
-        read(fd_hijo_padre[i][0], &temp, sizeof(temp));
-		NO += temp;
-        read(fd_hijo_padre[i][0], &temp, sizeof(temp));
-		SI += temp;
+        read(fd_hijo_padre[i][0], &temp1, sizeof(temp));
+		NO += temp1;
+        read(fd_hijo_padre[i][0], &temp1, sizeof(temp));
+		SI += temp1;
 	}
 
 	// Arreglo que contendra todos las cadenas y si es regular o no por worker
@@ -119,18 +126,22 @@ int main(int argc, char *argv[])
 	}
 
 	// LECTURA DE CADENAS Y SI ES REGULAR O NO
-	char temp;
+	char *temp2;
 	for (int i = 0; i < cantidadWorkers; i++)
 	{
-		read(fd_hijo_padre[i][0], &temp, sizeof(lineas));
-		lineas[i] = temp;
+		read(fd_hijo_padre[i][0], &temp2, sizeof(lineas));
+		lineas[i] = temp2;
 	}
+
+	
+
+
 
 	// ESCRITURA DEL ARCHIVO FINAL
 	FILE *archivoSalida = fopen(nombre_archivo_salida, "w");
 	for (int i = 0; i < cantidadLineas; i++)
 	{
-		fprintf(archivoSalida,"%c\n",lineas[i]);
+		fprintf(archivoSalida,"%s\n",lineas[i]);
 	}
     fprintf(archivoSalida,"Total de expresiones que Si son regulares: %d\n",SI);
     fprintf(archivoSalida,"Total de expresiones que No son regulares: %d\n",NO);
@@ -142,7 +153,7 @@ int main(int argc, char *argv[])
 	{
 		for (int i = 0; i < cantidadLineas; i++)
 		{
-			printf("%c\n",lineas[i]);
+			printf("%s\n",lineas[i]);
 			
 		}
 		printf("Total de expresiones que Si son regulares: %d\n",SI);
